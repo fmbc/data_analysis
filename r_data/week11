@@ -1,0 +1,484 @@
+R기반 데이터 분석 입문 11주 => 데이터 가공
+
+iris
+Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+1            5.1         3.5          1.4         0.2     setosa
+2            4.9         3.0          1.4         0.2     setosa
+3            4.7         3.2          1.3         0.2     setosa
+4            4.6         3.1          1.5         0.2     setosa
+5            5.0         3.6          1.4         0.2     setosa
+6            5.4         3.9          1.7         0.4     setosa
+7            4.6         3.4          1.4         0.3     setosa
+8            5.0         3.4          1.5         0.2     setosa
+9            4.4         2.9          1.4         0.2     setosa
+10           4.9         3.1          1.5         0.1     setosa
+11           5.4         3.7          1.5         0.2     setosa
+12           4.8         3.4          1.6         0.2     setosa
+13           4.8         3.0          1.4         0.1     setosa
+14           4.3         3.0          1.1         0.1     setosa
+#head() 데이터 앞부분 출력
+> head(iris)
+Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+> head(iris, 10)
+#tail() 데이터 뒷부분 출력
+> tail(iris,10)
+Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+141          6.7         3.1          5.6         2.4 virginica
+142          6.9         3.1          5.1         2.3 virginica
+143          5.8         2.7          5.1         1.9 virginica
+144          6.8         3.2          5.9         2.3 virginica
+145          6.7         3.3          5.7         2.5 virginica
+146          6.7         3.0          5.2         2.3 virginica
+147          6.3         2.5          5.0         1.9 virginica
+148          6.5         3.0          5.2         2.0 virginica
+149          6.2         3.4          5.4         2.3 virginica
+150          5.9         3.0          5.1         1.8 virginica
+#View() 뷰어창에서 데이터 확인
+> View(iris)
+#dim() 데이터 차원 출력
+> dim(iris)
+[1] 150   5 # 150개 행, 50개의 열
+#str() 데이터 속성 출력
+> str(iris)
+'data.frame':   150 obs. of  5 variables:
+$ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+$ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+$ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+$ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+$ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
+#summary() 요약 통계량 출력
+> summary(iris)
+# Min: 평균
+#  3rd: 75%  구간의 점수
+Sepal.Length    Sepal.Width     Petal.Length    Petal.Width          Species  
+Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100   setosa    :50  
+1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300   versicolor:50  
+Median :5.800   Median :3.000   Median :4.350   Median :1.300   virginica :50  
+Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199                  
+3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800                  
+Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500              
+#ls() 변수 항목을 리스트로 출력
+> ls(iris)
+[1] "Petal.Length" "Petal.Width"  "Sepal.Length" "Sepal.Width"  "Species"   #알파벳순
+
+
+# 실습1 (mpg)
+#실제 데이터를 불러와 데이터 특성을 파악해보자.
+#ggplot2 패키지에 내장된 mpg 데이터 이용
+> install.packages("ggplot2")
+> library(ggplot2)
+> mpg
+# A tibble: 234 × 11
+   manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class  
+   <chr>        <chr>      <dbl> <int> <int> <chr>      <chr> <int> <int> <chr> <chr>  
+ 1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p     compact
+ 2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p     compact
+ 3 audi         a4           2    2008     4 manual(m6) f        20    31 p     compact
+ 4 audi         a4           2    2008     4 auto(av)   f        21    30 p     compact
+ 5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p     compact
+ 6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p     compact
+# ggplot2의 mpg 데이터를 데이터프레임 형태로 불러오기
+> mpg<-as.data.frame(ggplot2::mpg)
+ manufacturer               model displ year cyl      trans drv cty hwy fl   class
+1          audi                  a4   1.8 1999   4   auto(l5)   f  18  29  p compact
+2          audi                  a4   1.8 1999   4 manual(m5)   f  21  29  p compact
+3          audi                  a4   2.0 2008   4 manual(m6)   f  20  31  p compact
+4          audi                  a4   2.0 2008   4   auto(av)   f  21  30  p compact
+5          audi                  a4   2.8 1999   6   auto(l5)   f  16  26  p compact
+6          audi                  a4   2.8 1999   6 manual(m5)   f  18  26  p compact
+7          audi                  a4   3.1 2008   6   auto(av)   f  18  27  p compact
+8          audi          a4 quattro   1.8 1999   4 manual(m5)   4  18  26  p compact
+9          audi          a4 quattro   1.8 1999   4   auto(l5)   4  16  25  p compact
+10         audi          a4 quattro   2.0 2008   4 manual(m6)   4  20  28  p compact
+
+# 실습2 : 데이터 다루기
+# 데이터에 변수를 조합하거나 함수를 적용해 새 변수를 만들어 분석할 수 있다. 
+# 파생변수 : 기존의 변수를 변형해 만든 변수
+# 2개의 변수로 구성된 데이터 프레임을 생성
+> df<-data.frame(var1=c(4,3,8),var2=c(2,6,1))
+> df
+    var1 var2
+1    4    2
+2    3    6
+3    8    1
+# var1과 var2 변수의 값을 더한 var_sum 파생변수를 만들어 df에 추가한다.
+> df$var_sum<-df$var1+df$var2  #데이터 프레임명에 $를 붙여 새로운 변수명을 입력
+> df
+    var1 var2 var_sum
+1    4    2       6
+2    3    6       9
+3    8    1       9
+#var_mean 파생변수를 만들어보자.
+df$var_mean<-(df$var1+df$var2)/2
+df
+    var1 var2 var_sum var_mean
+1    4    2       6      3.0
+2    3    6       9      4.5
+3    8    1       9      4.5
+
+
+# 실습 2 (mpg2) : 통합연비 변수 생성
+#ggplot2 패키지에 내장된 mpg 데이터 이용, 데이터가 234행, 11열로 구성됨. 하나의 행이 자동차 한종에 대한 정보임.
+> mpg
+# ggplot의 mpg 데이터를 데이터프레임 형태로 불러오기
+> mpg2<-as.data.frame(ggplot2::mpg) 
+> mpg2
+        manufacturer              model displ year cyl    trans    drv cty hwy fl   class
+1           audi                     a4   1.8 1999   4   auto(l5)   f  18  29  p    compact
+2           audi                     a4   1.8 1999   4 manual(m5)   f  21  29  p    compact
+3           audi                     a4   2.0 2008   4 manual(m6)   f  20  31  p    compact
+4           audi                     a4   2.0 2008   4   auto(av)   f  21  30  p    compact
+5           audi                     a4   2.8 1999   6   auto(l5)   f  16  26  p    compact
+6           audi                     a4   2.8 1999   6 manual(m5)   f  18  26  p    compact
+7           audi                     a4   3.1 2008   6   auto(av)   f  18  27  p    compact
+8           audi             a4 quattro   1.8 1999   4 manual(m5)   4  18  26  p    compact
+9           audi             a4 quattro   1.8 1999   4   auto(l5)   4  16  25  p    compact
+10          audi             a4 quattro   2.0 2008   4 manual(m6)   4  20  28  p    compact
+# displ(배기량), cty(도시연비), hwy(고속도로연지), fl(연료)
+# 도시연비(cty)와 고속도로 연비(hwy)를 더하고 2로 나눠 통합연비 변수 생성
+> mpg2$total<-(mpg2$cty+mpg2$hwy)/2 
+> head(mpg2)
+   manufacturer model displ year cyl      trans drv cty hwy fl   class total
+1         audi    a4   1.8 1999   4   auto(l5)   f  18  29  p compact  23.5
+2         audi    a4   1.8 1999   4 manual(m5)   f  21  29  p compact  25.0
+3         audi    a4   2.0 2008   4 manual(m6)   f  20  31  p compact  25.5
+4         audi    a4   2.0 2008   4   auto(av)   f  21  30  p compact  25.5
+5         audi    a4   2.8 1999   6   auto(l5)   f  16  26  p compact  21.0
+6         audi    a4   2.8 1999   6 manual(m5)   f  18  26  p compact  22.0
+# 통합연비 변수의 평균
+> mean(mpg2$total) 
+[1] 20.14957
+#함수를 활용해 파생변수 만들기
+#mpg 데이터에서 전체 자동차 중에서 연비 기준을 충족해 '고연비 합격 판정'을 받은 자동차가 몇대나 되는지..
+# 1. 기준값 정하기 
+> summary(mpg2$total)
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+10.50   15.50   20.50   20.15   23.50   39.50 
+=> total 연비의 평균과 중앙값이 약 20이다.
+#total 연비가 20~25 사이에 해당하는 자동차 모델이 가장 많다.
+#대부분 25이하이고 25를 넘기는 자동차는 많지 않다.
+#히스토그램 생성, 히스토그램은 값의 빈도를 막대 길이로 표현한 그래프.
+> hist(mpg2$total) 
+2. 
+#요약 통계량과 히스토그램을 종합해 total 연비 변수가 20을 넘기면 합격, 못하면 불합격으로 분류해보자.
+#합격 판정 변수 만들기
+> ifelse(mpg2$total>=20,"pass","fail") 
+> mpg2$test<-ifelse(mpg2$total>=20,"pass","fail")
+> head(mpg2,20)
+  manufacturer              model displ year cyl      trans drv cty hwy fl   class total test
+1          audi                 a4   1.8 1999   4   auto(l5)   f  18  29  p compact  23.5 pass
+2          audi                 a4   1.8 1999   4 manual(m5)   f  21  29  p compact  25.0 pass
+3          audi                 a4   2.0 2008   4 manual(m6)   f  20  31  p compact  25.5 pass
+4          audi                 a4   2.0 2008   4   auto(av)   f  21  30  p compact  25.5 pass
+5          audi                 a4   2.8 1999   6   auto(l5)   f  16  26  p compact  21.0 pass
+6          audi                 a4   2.8 1999   6 manual(m5)   f  18  26  p compact  22.0 pass
+7          audi                 a4   3.1 2008   6   auto(av)   f  18  27  p compact  22.5 pass
+8          audi         a4 quattro   1.8 1999   4 manual(m5)   4  18  26  p compact  22.0 pass
+9          audi         a4 quattro   1.8 1999   4   auto(l5)   4  16  25  p compact  20.5 pass
+10         audi         a4 quattro   2.0 2008   4 manual(m6)   4  20  28  p compact  24.0 pass
+11         audi         a4 quattro   2.0 2008   4   auto(s6)   4  19  27  p compact  23.0 pass
+12         audi         a4 quattro   2.8 1999   6   auto(l5)   4  15  25  p compact  20.0 pass
+13         audi         a4 quattro   2.8 1999   6 manual(m5)   4  17  25  p compact  21.0 pass
+14         audi         a4 quattro   3.1 2008   6   auto(s6)   4  17  25  p compact  21.0 pass
+15         audi         a4 quattro   3.1 2008   6 manual(m6)   4  15  25  p compact  20.0 pass
+16         audi         a6 quattro   2.8 1999   6   auto(l5)   4  15  24  p midsize  19.5 fail
+17         audi         a6 quattro   3.1 2008   6   auto(s6)   4  17  25  p midsize  21.0 pass
+18         audi         a6 quattro   4.2 2008   8   auto(s6)   4  16  23  p midsize  19.5 fail
+19    chevrolet c1500 suburban 2wd   5.3 2008   8   auto(l4)   r  14  20  r     suv  17.0 fail
+20    chevrolet c1500 suburban 2wd   5.3 2008   8   auto(l4)   r  11  15  e     suv  13.0 fail
+# 연비 합격 빈도표 생성, 빈도표는 변수의 각 값들이 몇 개씩 존재하는지 개수를 나타낸 표.
+> table(mpg2$test) 
+fail pass 
+106  128 
+> qplot(mpg2$test) # 연비 합격 빈도 막대 그래프 생성
+# 함수를 활용해 파생변수 만들기2
+# 3. A,B,C 세 종류의 연비 등급으로 분류하는 변수 만들기
+# total이 30 이상이면 A, 20~29는 B, 20미만이면 C등급으로 분류
+> mpg2$grade<-ifelse(mpg2$total>=30,"A",ifelse(mpg2$total>=20,"B","C"))
+> head(mpg2,20)
+> table(mpg2$grade) #등급 빈도표 생성
+A   B   C 
+10 118 106 
+> qplot(mpg2$grade) #등급 빈도 막대 그래프 생성
+# 4. A,B,C,D 네 종류의 연비 등급으로 분류는 mpg2$grade2 변수를 만들어 보세요.
+#total이 30 이상이면 A, 25 이상이면 B, 20이상이면 C등급으로, 나머지는 D등급으로 분류
+> mpg2$grade2<-ifelse(mpg2$total>=30,"A",ifelse(mpg2$total>=25,"B", ifelse(mpg2$total>=20,"C","D")))
+> table(mpg2$grade2)
+A   B   C   D 
+10  33  85 106 
+
+
+# 데이터 전처리 : 주어진 데이터를 분석에 적합하게 데이터를 가공하는 작업 
+# 데이터 가공하기(데이터를 추출하거나 여러 데이터 합치기 등)
+# 조건에 맞는 데이터만 추출
+# 실습 3: 데이터 전처리
+> install.packages("dplyr")
+> library(dplyr)
+> setwd("C://r1")
+> exam<-read.csv("csv_exam.csv")
+> exam
+id class math english science
+1   1     1   50      98      50
+2   2     1   60      97      60
+3   3     1   45      86      78
+4   4     1   30      98      58
+5   5     2   25      80      65
+6   6     2   50      89      98
+7   7     2   80      90      45
+8   8     2   90      78      25
+9   9     3   20      98      15
+10 10     3   50      98      45
+11 11     3   65      65      65
+12 12     3   45      85      32
+13 13     4   46      98      65
+14 14     4   48      87      12
+15 15     4   75      56      78
+16 16     4   58      98      65
+17 17     5   65      68      98
+18 18     5   80      78      90
+19 19     5   89      68      87
+20 20     5   78      83      58
+# %>% 파이프 연산자
+# 1. 1반 학생들의 데이터만 추출해보자.
+> exam %>% filter(class==1)
+
+# 2. 2반 학생들의 데이터만 추출해보자.
+> exam %>% filter(class==2)
+
+# 3. 1반이 아닌 경우 추출
+> exam %>% filter(class!=1)
+
+# 4. 3반이 아닌 경우만 추출해보자.
+> exam %>% filter(class!=3)
+
+# 5. 수학점수가 50점을 초과한 경우
+> exam %>% filter(math>50) 
+
+# 6. 영어점수가 80점 이상인 경우를 추출해보자.
+> exam %>% filter(english>=80)
+
+# 7. 1반이면서 수학 점수가 50점 이상인 경우
+> exam %>% filter(class==1 & math>=50)
+
+# 2반이면서 영어 점수가 80점 이상인 경우를 추출해보자.
+> exam %>% filter(class==2 & english>=80)
+
+# 수학점수가 90점 이상이거나 영어점수가 90점 이상인 경우
+> exam %>% filter(math>=90 | english>=90)
+
+# 영어점수가 90점 미만이거나 과학점수가 50점 미만인 경우를 추출해보자.
+> exam %>% filter(english<=90 | science<=50)
+
+# 1,3,5반에 해당하면 추출
+> exam %>% filter(class==1 | class==3 | class==5)
+> exam %>% filter(class %in% c(1,3,5))
+
+#추출한 행으로 데이터 만들기
+# 1반의 수학점수 평균
+> class1<-exam %>% filter(class==1)
+> mean(class1$math)
+[1] 46.25
+
+# 2반의 수학점수 평균
+> class2<-exam %>% filter(class==3)
+> mean(class2$math)
+[1] 45
+
+# test가 fail인 통합연비의 평균 
+> a1 <- mpg2 %>% filter(test=="fail")
+> mean(a1$total)
+[1] 15.63679
+
+# test가 passd인 통합연비의 평균 
+> b1 <- mpg2 %>% filter(test=="pass")
+> mean(b1$total)
+[1] 23.88672
+
+#suv인 차의 평균 연비
+> c1 <- mpg2 %>% filter(class=="suv")
+> mean(c1$cty)
+[1] 13.5
+
+# math 변수 추출하기
+> exam %>% select(math)
+
+#english 변수를 추출해보자.
+> exam %>% select(english)
+
+#여러 변수 추출하기
+# class math english 변수 추출하기
+> exam %>% select(class,math,english)
+
+# math 변수 제외하고 나머지 변수 추출하기
+> exam %>% select(-math)
+# math english 변수 제외하고 나머지 변수 다 추출하기
+> exam %>% select(-math,-english)
+
+#filter()와 select() 조합하기
+# class가 1인 행만 추출한 다음 english 추출
+> exam %>% filter(class==1) %>% select(english)
+
+# id, math 만 추출하면서 맨 위의 데이터만 추출 
+> exam %>% select(id, math) %>% head
+
+# id, math 만 추출하면서 맨 위의 10개의 데이터만 추출 
+> exam %>% select(id, math) %>% head(10)
+
+# 오름차순으로 math 정렬하기
+> exam %>% arrange(math)
+   id class math english science
+1   9     3   20      98      15
+2   5     2   25      80      65
+3   4     1   30      98      58
+4   3     1   45      86      78
+5  12     3   45      85      32
+6  13     4   46      98      65
+
+#내림차순 math 정렬
+> exam %>% arrange(desc(math)) 
+id class math english science
+1   8     2   90      78      25
+2  19     5   89      68      87
+3   7     2   80      90      45
+4  18     5   80      78      90
+5  20     5   78      83      58
+
+# 오름차순으로 class, math 정렬하기
+> exam %>% arrange(class, math)
+
+# 내림차순으로 math 정렬하고, 맨 앞의 데이터를 5개만 보여주기
+exam %>% arrange(desc(math)) %>% head(5) 
+
+# 실습 4 : suv이면서 내림차순으로 totla 정렬하고, 맨 앞 데이터 10개만 보여주는 d1 
+d1 <- mpg2 %>%
+  filter(class=="suv") %>%
+  arrange(desc(total)) %>%
+  head(10)
+d1
+   manufacturer              model displ year cyl      trans drv cty hwy fl class total test
+1        subaru       forester awd   2.5 2008   4 manual(m5)   4  20  27  r   suv  23.5 pass
+2        subaru       forester awd   2.5 2008   4   auto(l4)   4  20  26  r   suv  23.0 pass
+3        subaru       forester awd   2.5 2008   4 manual(m5)   4  19  25  p   suv  22.0 pass
+4        subaru       forester awd   2.5 1999   4 manual(m5)   4  18  25  r   suv  21.5 pass
+5        subaru       forester awd   2.5 1999   4   auto(l4)   4  18  24  r   suv  21.0 pass
+6        subaru       forester awd   2.5 2008   4   auto(l4)   4  18  23  p   suv  20.5 pass
+7          jeep grand cherokee 4wd   3.0 2008   6   auto(l5)   4  17  22  d   suv  19.5 fail
+8        toyota        4runner 4wd   2.7 1999   4   auto(l4)   4  16  20  r   suv  18.0 fail
+9        toyota        4runner 4wd   4.0 2008   6   auto(l5)   4  16  20  r   suv  18.0 fail
+10         jeep grand cherokee 4wd   4.0 1999   6   auto(l4)   4  15  20  r   suv  17.5 fail
+> mean(d1$hwy)
+[1] 23.2
+
+#파생변수 추가하기
+#mutate함수 : 데이터에 열을 추가할 때 사용한다.
+#mutate(데이터, 추가할 열 이름=조건 1, ...)
+# 총합변수 추가 후 일부분 추출
+> exam %>% mutate(total = math + english + science) %>% head    
+> mutate(exam, total = math + english + science)   
+  id class math english science total
+1  1     1   50      98      50   198
+2  2     1   60      97      60   217
+3  3     1   45      86      78   209
+4  4     1   30      98      58   186
+5  5     2   25      80      65   170
+6  6     2   50      89      98   237
+> exam 
+   id class math english science
+1   1     1   50      98      50
+2   2     1   60      97      60
+3   3     1   45      86      78
+4   4     1   30      98      58
+5   5     2   25      80      65
+6   6     2   50      89      98
+7   7     2   80      90      45
+8   8     2   90      78      25
+9   9     3   20      98      15
+10 10     3   50      98      45
+11 11     3   65      65      65
+
+#mutate(파생변수)가 아닌 실제 할당
+exam$total <- exam$math + exam$english + exam$science
+exam
+id class math english science total
+1  1     1   50      98      50   198
+2  2     1   60      97      60   217
+3  3     1   45      86      78   209
+4  4     1   30      98      58   186
+5  5     2   25      80      65   170
+6  6     2   50      89      98   237
+
+#여러 파생변수 한번에 추가하기, 총합변수(total), 총평균(mean) 변수 추가
+> exam %>% mutate(total=math+english+science, mean=(math+english+science)/3) %>% head
+> mutate(exam, total=math+english+science, mean=(math+english+science)/3)
+
+# mutate()에 ifelse() 적용하기
+# 과학 60점 이상이면 pass, 아니면 fail
+> exam %>% mutate(test=ifelse(science>=60,"pass","fail")) %>% head
+> mutate(exam, test=ifelse(science>=60,"pass","fail"))
+
+# 총합 변수 추가 후 총합 변수 기준 정렬
+# 총합 변수 추가 후 내림차순으로 변수 기준 정렬 
+> exam %>% mutate(total = math + english + science) %>% arrange(desc(total)) %>% head
+
+
+#summarise함수로 데이터 요약
+#summarise함수 : 통계 함수와 함께 사용하며 데이터를 요약할 때 사용한다.
+#대표적 통계 함수에는 평균을 구하는 mean(), 중앙값 median(), 최소값 min(), 최대값 max(), 합계 sum()이 있다. n()개수
+#summarise(데이터, 요약 결과 저장 열=통계함수)
+
+# math의 평균 요약
+> exam %>% summarise(mean(math))
+  mean(math)
+1      57.45
+
+#group_by함수로 그룹별 요약
+#단독으로 쓰이기보다는 다른 함수와 연계해서 사용된다.
+#집단별로 요약하기, class별로 분리 후 math 평균 산출
+> exam %>% group_by(class) %>% summarise(mean_math=mean(math)) 
+  class mean_math
+  <int>     <dbl>
+1     1      46.2
+2     2      61.2
+3     3      45  
+4     4      56.8
+5     5      78
+
+#여러 요약 통계량 한 번에 산출하기
+# 실습 : 집단별로 요약하기, class별로 분리 후, math의 평균, 합계, 중앙값, 학생수, 빈도 산출. 
+> exam %>% 
+  group_by(class) %>%     #class별로 분리
+  summarise(mean_math=mean(math),sum_math=sum(math),median_math=median(math),n=n()) #math 평균,합계,중앙값,학생수
+#n() 빈도를 구하는 기능
+  class mean_math sum_math median_math     n
+1     1      46.2      185        47.5     4
+2     2      61.2      245        65       4
+3     3      45        180        47.5     4
+4     4      56.8      227        53       4
+5     5      78        312        79       4
+
+#각 집단별로 다시 집단 나누기(mpg 데이터를 이용해 구해보자)
+# 실습 : mpg에서 회사별, 구동 방식별로 분리, cty 평균(mean_cty) 산출하고 데이터의 앞부분 10개만. 
+> mpg %>%
+  group_by(manufacturer,drv) %>%    
+  summarise(mean_cty=mean(cty)) %>% head(10) 
+
+#dplyr조합하기
+#회사별로 "suv"자동차의 도시 및 고속도로 통합 연비 평균을 구해 내림차순으로 정렬하고, 1~5위까지 출력하기
+mpg %>%
+  group_by(manufacturer) %>%
+  filter(class=="suv") %>%
+  mutate(mean = (cty+hwy)/2) %>%
+  arrange(desc(mean)) %>%
+  head(5)
+
+# math를 내림차순으로 정렬하고, 5위까지 출력하기
+exam %>% arrange(desc(math)) %>% head(5) 
+
+
+
